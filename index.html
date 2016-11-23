@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C Geeksforgeeks</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="c-geeks-for-geeks">C (Geeks For Geeks)</h1>
+
+
+
+<h3 id="declaration-vs-definition">Declaration vs Definition</h3>
+
+<p>Declaration - Part where variable is first declared <br>
+Definition - Part where is variable is assigned memory location and a value</p>
+
+<p>Normally definition and delcaration happens together. But in case of extern variables and functions they can happen in different places</p>
+
+
+
+<h3 id="static-variables">Static Variables</h3>
+
+<p>Static variables preserve their value even after they go out of scope. </p>
+
+<p>Global static variables can be accessed anywhere in the program. (even in other files you mean?)</p>
+
+<p>By default static variables are assigned a value of 0 by compiler</p>
+
+<p>An example, even though y is assigned 5 in every iteration, the assignment happens only once and the output is 6,7</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs perl"><span class="hljs-keyword">x</span>=<span class="hljs-number">2</span>;
+<span class="hljs-keyword">while</span> (<span class="hljs-keyword">x</span> &gt; <span class="hljs-number">0</span>)
+    {
+        static <span class="hljs-keyword">int</span> <span class="hljs-keyword">y</span> = <span class="hljs-number">5</span>;
+        <span class="hljs-keyword">y</span>++;
+        <span class="hljs-regexp">//</span> printing value at <span class="hljs-keyword">each</span> iteration
+        <span class="hljs-keyword">printf</span>(<span class="hljs-string">"The value of y is <span class="hljs-variable">%d</span>\n"</span>,<span class="hljs-keyword">y</span>);
+        <span class="hljs-keyword">x</span>--;
+    }</code></pre>
+
+
+
+<h3 id="global-variables">Global variables</h3>
+
+<p>If uinitialized have a default value of 0</p>
+
+<hr>
+
+<h4 id="redeclaration-of-global-variables">Redeclaration of global variables</h4>
+
+<p><strong>In C</strong> <br>
+You can redeclare global variables if the first declaration doesn’t initialize</p>
+
+<p>So the following program compiles without errors</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs perl">// Program <span class="hljs-number">2</span>
+<span class="hljs-keyword">int</span> <span class="hljs-keyword">x</span>;
+<span class="hljs-keyword">int</span> <span class="hljs-keyword">x</span> = <span class="hljs-number">5</span>;
+
+<span class="hljs-keyword">int</span> main()
+{
+   <span class="hljs-keyword">printf</span>(<span class="hljs-string">"<span class="hljs-variable">%d</span>"</span>, <span class="hljs-keyword">x</span>);
+}</code></pre>
+
+<p>But this program has compilation error</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs perl"><span class="hljs-keyword">int</span> <span class="hljs-keyword">x</span> = <span class="hljs-number">5</span>;
+<span class="hljs-keyword">int</span> <span class="hljs-keyword">x</span> = <span class="hljs-number">10</span>;
+
+<span class="hljs-keyword">int</span> main()
+{
+   <span class="hljs-keyword">printf</span>(<span class="hljs-string">"<span class="hljs-variable">%d</span>"</span>, <span class="hljs-keyword">x</span>);
+   <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+
+<p><strong>In C++</strong> <br>
+This is not allowd in C++ and redeclaring a global variables produces redefinition error</p>
+
+<hr>
+
+<h3 id="extern-variables">Extern Variables</h3>
+
+<p><code>extern int x = 9;</code> <br>
+Defines a variable x with value 9 and tells the compiler that this is an extern variable and can be allowed to be accessed from other files</p>
+
+<p><code>extern int z</code> <br>
+Tells the compiler that z has been declared somewhere else as an extern variable and use that variable here</p>
+
+<hr>
+
+<h3 id="funda-about-return-type-of-main">Funda about return type of main</h3>
+
+<p>C standards specify that main function should be of type int.</p>
+
+<p>In some compilers <code>main() {}</code> treats the main function implicitly as of type int. But in standard C specification this is a compilation error. </p>
+
+<p>Return statements are not mandatory in main function. An implicit value of 0 will be returned if no return statement present.</p>
+
+<hr>
+
+<h3 id="difference-between-c-and-c-for-functions-with-no-parameters">Difference between C and C++ for functions with no parameters</h3>
+
+<p><strong>In C void fn() means that the fn can take any number of parameters.</strong> And so the following program runs without any error in C</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs cpp"><span class="hljs-preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="hljs-keyword">int</span> main()
+{
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> i = <span class="hljs-number">5</span>;
+    <span class="hljs-keyword">if</span> (--i){
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%d "</span>, i);
+        main(<span class="hljs-number">10</span>);
+    }
+}</code></pre>
+
+<p>But in C++ it produces error since in <strong>C++ <code>void fn()</code> represents a function that takes no parameter</strong></p>
+
+<hr>
+
+<h2 id="preprocessors">Preprocessors</h2>
+
+<ul>
+<li>## is called token-pasting operator </li>
+</ul>
+
+
+
+<pre class="prettyprint"><code class=" hljs vala"><span class="hljs-preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="hljs-preprocessor">#define merge(a, b) a##b</span>
+<span class="hljs-keyword">int</span> main()
+{
+    printf(<span class="hljs-string">"%d "</span>, merge(<span class="hljs-number">12</span>, <span class="hljs-number">34</span>));
+}
+<span class="hljs-comment">// Output: 1234</span></code></pre>
+
+<ul>
+<li>A token passed to macro can be converted to a sting literal by using # before it.</li>
+</ul>
+
+
+
+<pre class="prettyprint"><code class=" hljs vala"><span class="hljs-preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="hljs-preprocessor">#define get(a) #a</span>
+<span class="hljs-keyword">int</span> main()
+{
+    <span class="hljs-comment">// GeeksQuiz is changed to "GeeksQuiz"</span>
+    printf(<span class="hljs-string">"%s"</span>, <span class="hljs-keyword">get</span>(GeeksQuiz));
+}
+<span class="hljs-comment">// Output: GeeksQuiz</span></code></pre>
+
+<ul>
+<li>Macros can be written in multiple lines using \ at the end of each line except the last one</li>
+<li>Standard preprocessor MACROS <br>
+<ul><li><code>__FILE__</code></li>
+<li><code>__LINE__</code></li>
+<li><code>__TIME__</code></li>
+<li><code>__DATE__</code></li></ul></li>
+</ul>
+
+<hr>
+
+<h3 id="scope-rules">Scope rules</h3>
+
+<ul>
+<li>Global scope - Can be accessed anywhere in the program.  <br>
+Global variables can be accessed in other files linked using extern <br>
+<em>* To restrict access of a global variable to the current file only declare it as static*</em></li>
+</ul>
+
+<hr>
+
+<h3 id="fundas-in-linking-weak-and-strong-linking">Fundas in linking - Weak and strong linking</h3>
+
+<p>There are two types of linking <br>
+- Strong linking : Functions and initialized global variables  <br>
+- Weak linking - Uninitialized global variables</p>
+
+
+
+<h4 id="rules">Rules</h4>
+
+<ol>
+<li>Multiple strong symbols are not allowed</li>
+<li>Given a strong symbol and a weak symbol the strong symbol is taken</li>
+<li>Given multiple weak symbols choose any one of them</li>
+</ol>
+
+<p>This can lead to weird behaviours like</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs cpp"><span class="hljs-comment">/* foo3.c */</span>
+<span class="hljs-preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="hljs-keyword">void</span> f(<span class="hljs-keyword">void</span>);
+<span class="hljs-keyword">int</span> x = <span class="hljs-number">15213</span>;
+<span class="hljs-keyword">int</span> main()
+{
+  f(); <span class="hljs-comment">// Modifies the x in the current file</span>
+  <span class="hljs-built_in">printf</span>(<span class="hljs-string">"x = %d\n"</span>, x);
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-comment">/* bar3.c */</span>
+<span class="hljs-keyword">int</span> x;
+<span class="hljs-keyword">void</span> f()
+{
+  x = <span class="hljs-number">15212</span>;
+}</code></pre>
+
+<hr>
+
+<h3 id="complex-delcarations-in-c-and-how-to-read-them">Complex Delcarations in C and how to read them</h3>
+
+<p>Sometimes there are complex declarations of the type <br>
+<code>void (*bsd_signal(int sig, void (*func)(int)))(int);</code></p>
+
+<p><strong>To know what this actually means follow the rules</strong> <br>
+1. Convert C declaration to postfix format and read from left to right. <br>
+2. To convert experssion to postfix, start from innermost parenthesis, If innermost parenthesis is not present then start from declarations name and go right first. When first ending parenthesis encounters then go left. Once whole parenthesis is parsed then come out from parenthesis. <br>
+3. Continue until complete declaration has been parsed.</p>
+
+<p>Examples</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs d"><span class="hljs-keyword">void</span> (*f[<span class="hljs-number">10</span>]) (<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>)
+Postfix: f[<span class="hljs-number">10</span>] * (<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>) <span class="hljs-keyword">void</span>
+Meaning: f <span class="hljs-keyword">is</span> an array of <span class="hljs-number">10</span> of pointers to a <span class="hljs-built_in">function</span> <span class="hljs-keyword">with</span> <span class="hljs-number">2</span> args (<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>) and returning <span class="hljs-keyword">void</span></code></pre>
+
+
+
+<pre class="prettyprint"><code class=" hljs vhdl">int *(*(*arr[<span class="hljs-number">5</span>])()) ()
+Postfix: arr[<span class="hljs-number">5</span>] * () * () * int
+Meaning: arr <span class="hljs-keyword">is</span> an <span class="hljs-keyword">array</span> <span class="hljs-keyword">of</span> <span class="hljs-number">5</span>, <span class="hljs-keyword">of</span> pointers, <span class="hljs-keyword">to</span> <span class="hljs-keyword">function</span> returning, pointer <span class="hljs-keyword">to</span> <span class="hljs-keyword">function</span> returning pointer <span class="hljs-keyword">to</span> <span class="hljs-typename">integer</span></code></pre>
+
+
+
+<pre class="prettyprint"><code class=" hljs d"><span class="hljs-keyword">void</span> (*bsd_signal(<span class="hljs-keyword">int</span> sig, <span class="hljs-keyword">void</span> (*func)(<span class="hljs-keyword">int</span>)))(<span class="hljs-keyword">int</span>);
+Postfix: bsd_signal(<span class="hljs-keyword">int</span> sig, <span class="hljs-keyword">void</span>(*func)(<span class="hljs-keyword">int</span>)) * (<span class="hljs-keyword">int</span>) <span class="hljs-keyword">void</span>
+Meaning: bsd_signal <span class="hljs-keyword">is</span> a <span class="hljs-built_in">function</span> that takes integer &amp; a pointer to a <span class="hljs-built_in">function</span>(that takes integer as argument and returns <span class="hljs-keyword">void</span>) and returns pointer to a <span class="hljs-built_in">function</span>(that take integer as argument and returns <span class="hljs-keyword">void</span>)</code></pre>
+
+<hr>
+
+
+
+<h3 id="sizes-of-data-types-in-c-and-their-printf-format-specifier">Sizes of data types in C and their printf format specifier</h3>
+
+
+
+<pre class="prettyprint"><code class=" hljs objectivec">Data Type             Memory (bytes)          Range                      Format Specifier
+<span class="hljs-keyword">short</span> <span class="hljs-keyword">int</span>                   <span class="hljs-number">2</span>          -<span class="hljs-number">32</span>,<span class="hljs-number">768</span> to <span class="hljs-number">32</span>,<span class="hljs-number">767</span>                       %hd
+<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">short</span> <span class="hljs-keyword">int</span>          <span class="hljs-number">2</span>           <span class="hljs-number">0</span> to <span class="hljs-number">65</span>,<span class="hljs-number">535</span>                            %hu
+<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>                <span class="hljs-number">4</span>           <span class="hljs-number">0</span> to <span class="hljs-number">4</span>,<span class="hljs-number">294</span>,<span class="hljs-number">967</span>,<span class="hljs-number">295</span>                     %u
+<span class="hljs-keyword">int</span>                         <span class="hljs-number">4</span>          -<span class="hljs-number">2</span>,<span class="hljs-number">147</span>,<span class="hljs-number">483</span>,<span class="hljs-number">648</span> to <span class="hljs-number">2</span>,<span class="hljs-number">147</span>,<span class="hljs-number">483</span>,<span class="hljs-number">647</span>         %d
+<span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>                    <span class="hljs-number">4</span>          -<span class="hljs-number">2</span>,<span class="hljs-number">147</span>,<span class="hljs-number">483</span>,<span class="hljs-number">648</span> to <span class="hljs-number">2</span>,<span class="hljs-number">147</span>,<span class="hljs-number">483</span>,<span class="hljs-number">647</span>         %ld
+<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>           <span class="hljs-number">4</span>           <span class="hljs-number">0</span> to <span class="hljs-number">4</span>,<span class="hljs-number">294</span>,<span class="hljs-number">967</span>,<span class="hljs-number">295</span>                     %lu
+<span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>               <span class="hljs-number">8</span>          -(<span class="hljs-number">2</span>^<span class="hljs-number">63</span>) to (<span class="hljs-number">2</span>^<span class="hljs-number">63</span>)-<span class="hljs-number">1</span>                     %lld
+<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>      <span class="hljs-number">8</span>           <span class="hljs-number">0</span> to <span class="hljs-number">18</span>,<span class="hljs-number">446</span>,<span class="hljs-number">744</span>,<span class="hljs-number">073</span>,<span class="hljs-number">709</span>,<span class="hljs-number">551</span>,<span class="hljs-number">615</span>        %llu
+<span class="hljs-keyword">signed</span> <span class="hljs-keyword">char</span>                 <span class="hljs-number">1</span>          -<span class="hljs-number">128</span> to <span class="hljs-number">127</span>                             %c 
+<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>               <span class="hljs-number">1</span>           <span class="hljs-number">0</span> to <span class="hljs-number">255</span>                               %c
+<span class="hljs-keyword">float</span>                       <span class="hljs-number">4</span>                                                  %f
+<span class="hljs-keyword">double</span>                      <span class="hljs-number">8</span>                                                  %lf
+<span class="hljs-keyword">long</span> <span class="hljs-keyword">double</span>                 <span class="hljs-number">12</span>                                                 %Lf</code></pre>
+
+<hr>
+
+
+
+<h3 id="bool-data-type-in-c">bool data type in C</h3>
+
+<p><strong>In C++</strong> Bool data type is supported by default <br>
+<strong>In C</strong> C requires a header file to be present to use the bool data type (header file stdbool.h). Otherwise use int as a bool with 0 and 1 values</p>
+
+<hr>
+
+
+
+<h3 id="integer-promotions-in-c">Integer promotions in C</h3>
+
+<p>This applied to data type like char, short int which takes less no of bytes than int. However when some operations is done on them, they are automatically converted to int and then finally the answer is converted back to original data type</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs cpp"><span class="hljs-preprocessor">#include &lt;stdio.h&gt; </span>
+<span class="hljs-keyword">int</span> main()
+{
+    <span class="hljs-keyword">char</span> a = <span class="hljs-number">30</span>, b = <span class="hljs-number">40</span>, c = <span class="hljs-number">10</span>;
+    <span class="hljs-keyword">char</span> d = (a * b) / c;
+    <span class="hljs-built_in">printf</span> (<span class="hljs-string">"%d "</span>, d); 
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+
+<p>In the above program even though a * b &gt; 127, we get the correct answer without overflow, since (a * b) / c is done in int and then answer is converted back to char</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs cpp"><span class="hljs-preprocessor">#include &lt;stdio.h&gt;</span>
+
+<span class="hljs-keyword">int</span> main()
+{
+    <span class="hljs-keyword">char</span> a = <span class="hljs-number">0xfb</span>;
+    <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> b = <span class="hljs-number">0xfb</span>;
+
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"a = %c"</span>, a);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\nb = %c"</span>, b);
+
+    <span class="hljs-keyword">if</span> (a == b)
+      <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\nSame"</span>);
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\nNot Same"</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+
+<p>In this case in (a==b) statement a and b are both converted to int which becomes -5 and 251 which are not equal</p>
+
+<hr>
+
+
+
+<h3 id="size-of-operator">Size of operator</h3>
+
+<p>Size of operator returns and unsigned value. This can cause some weird results eg.</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs cpp"><span class="hljs-preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="hljs-keyword">int</span> main()
+{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">int</span>) &gt; -<span class="hljs-number">1</span>)
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Yes"</span>);
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"No"</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+
+<p>Output is no. This is because <code>sizeof(int)</code> returns <code>unsigned 4</code>. Comparing unsigned 4 and signed -1 promotes signed -1 to unsigned 2^32-1.</p>
+
+<hr>
+
+
+
+<h3 id="storage-classes-in-c-auto-extern-static-register">Storage classes in C - auto, extern, static, register</h3>
+
+<p>Each storage class has different - scope, visibility, and lifetime <br>
+- auto : these are the normal kind of variables defined in c <br>
+- extern : specifies that the variable is defined as a global variable somewhere else and we are intending to use that <br>
+- static : static variables are initialized only once during their lifetime. The has a lifetime till the end of a program. They are assigned a default value of 0 by the compiler if not explicitly defined. <br>
+- register : there are stored in one of the cpu registers if any one of the register is available. If no register is available then they are stored in the memory. <strong>Important difference is that we cannot obtain the address of a register variable</strong></p>
+
+<h3 id="auto-initialized-variables-in-c">Auto initialized variables in C</h3>
+
+<ul>
+<li>Global variables</li>
+<li>Static variables</li>
+</ul>
+
+<blockquote>
+  <p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
+</blockquote></div></body>
+</html>
