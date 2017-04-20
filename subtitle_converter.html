@@ -46,6 +46,7 @@
             <label>Converted Subtitle</label>
             <textarea class="form-control" id="output" rows="20"></textarea>
           </div>
+          <button id="download" class="btn btn-primary btn-lg btn-block">Download</button>
         </div>
       </div>
     </div>
@@ -185,6 +186,30 @@
         }
         process();
 
+      });
+
+      function download(filename, text) {
+          var pom = document.createElement('a');
+          pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+          pom.setAttribute('download', filename);
+
+          if (document.createEvent) {
+              var event = document.createEvent('MouseEvents');
+              event.initEvent('click', true, true);
+              pom.dispatchEvent(event);
+          }
+          else {
+              pom.click();
+          }
+      }
+
+      $("#download").click(function() {
+        var fileip = $("#output").val();
+        if (fileip == "") {
+          alert("Covert the subtitles first!!!");
+          return;
+        }
+        download('subtitles.sbv', fileip);
       });
     });
     </script>
